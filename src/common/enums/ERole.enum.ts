@@ -1,0 +1,8 @@
+/* eslint-disable */
+export enum ERole {
+  ADMIN='ADMIN',
+  COORDINATOR='COORDINATOR',
+  EVENT_ORGANIZER='EVENT_ORGANIZER',
+  SPEAKER='SPEAKER',
+  DELEGATE='DELEGATE'
+} 
