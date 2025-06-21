@@ -30,67 +30,83 @@ export class DelegateService {
     private readonly workshopRepository: Repository<Workshop>,
     private cloudinary: CloudinaryService,
   ) { }
+
   private delegates: any[] = []; // For demo purposes. Replace with DB integration.
 
-async create(
-  createDelegateDto: CreateDelegateDto,
-  file?: Express.Multer.File,
-): Promise<Delegate> {
-  let workshopIds = createDelegateDto.workshopIds as string | string[];
+  async create(
+    createDelegateDto: CreateDelegateDto,
+    file?: Express.Multer.File,
+  ): Promise<Delegate> {
+    let workshopIds = createDelegateDto.workshopIds as string | string[];
 
-  // Validate workshop selection
-  if (!workshopIds || (Array.isArray(workshopIds) && workshopIds.length !== 1)) {
-    throw new BadRequestException('Please select exactly one workshop.');
-  }
-
-  // Handle comma-separated string input
-  if (typeof workshopIds === 'string') {
-    workshopIds = workshopIds.split(',').map((id) => id.trim());
-    if (workshopIds.length !== 1) {
+    // Validate workshop selection
+    if (!workshopIds || (Array.isArray(workshopIds) && workshopIds.length !== 1)) {
       throw new BadRequestException('Please select exactly one workshop.');
     }
-  }
 
-  // Validate gender
-  let gender: EGender;
-  switch (createDelegateDto.myGender.toLowerCase()) {
-    case 'male':
-      gender = EGender.MALE;
-      break;
-    case 'female':
-      gender = EGender.FEMALE;
-      break;
-    case 'other':
-      gender = EGender.OTHER;
-      break;
-    default:
-      throw new BadRequestException(
-        'The provided gender is invalid, should be male, female, or other',
-      );
-  }
+    // Handle comma-separated string input
+    if (typeof workshopIds === 'string') {
+      workshopIds = workshopIds.split(',').map((id) => id.trim());
+      if (workshopIds.length !== 1) {
+        throw new BadRequestException('Please select exactly one workshop.');
+      }
+    }
 
-  // Find the selected workshop
-  const workshop = await this.workshopRepository.findOne({
-    where: { id: workshopIds[0] },
-  });
+    // Validate gender
+    let gender: EGender;
+    switch (createDelegateDto.myGender.toLowerCase()) {
+      case 'male':
+        gender = EGender.MALE;
+        break;
+      case 'female':
+        gender = EGender.FEMALE;
+        break;
+      case 'other':
+        gender = EGender.OTHER;
+        break;
+      default:
+        throw new BadRequestException(
+          'The provided gender is invalid, should be male, female, or other',
+        );
+    }
 
-  if (!workshop) {
-    throw new NotFoundException('Workshop not found');
-  }
+    // Validate workshop
+    const workshop = await this.workshopRepository.findOne({
+      where: { id: workshopIds[0] },
+    });
 
-  // Increment registration count
-  workshop.registered = (workshop.registered || 0) + 1;
-  await this.workshopRepository.save(workshop);
+    if (!workshop) {
+      throw new NotFoundException('Workshop not found');
+    }
 
-  // Create the delegate
-  const delegate = this.delegateRepository.create({
-    ...createDelegateDto,
-    gender: gender,
-    is_approved: true,
-    workshop, // Single workshop instead of array
-  });
+    // Increment registration count
+    workshop.registered = (workshop.registered || 0) + 1;
+    await this.workshopRepository.save(workshop);
 
-  // Handle profile picture upload
+    // Safely parse optional date fields
+    const arrivalDate =
+      createDelegateDto.arrival_datetime &&
+      !isNaN(new Date(createDelegateDto.arrival_datetime).getTime())
+        ? new Date(createDelegateDto.arrival_datetime)
+        : null;
+
+    const departureDate =
+      createDelegateDto.departure_datetime &&
+      !isNaN(new Date(createDelegateDto.departure_datetime).getTime())
+        ? new Date(createDelegateDto.departure_datetime)
+        : null;
+
+    // Create the delegate
+    const delegate = this.delegateRepository.create({
+      ...createDelegateDto,
+      gender,
+      is_approved: true,
+      workshop,
+      arrival_datetime: arrivalDate,
+      departure_datetime: departureDate,
+    });
+
+    // Handle profile picture upload
     if (file) {
       const pictureUrl = await this.cloudinary.uploadImage(file).catch((error) => {
         console.log(error);
@@ -99,14 +115,13 @@ async create(
       delegate.profile_picture_url = pictureUrl.url;
     }
 
-  const savedDelegate = await this.delegateRepository.save(delegate);
+    const savedDelegate = await this.delegateRepository.save(delegate);
 
-  // Optionally send welcome email
-  // await this.mailingService.sendWelcomeEmail(savedDelegate);
+    // Optionally send welcome email
+    // await this.mailingService.sendWelcomeEmail(savedDelegate);
 
-  return savedDelegate;
-}
-
+    return savedDelegate;
+  }
 
   async generateDelegateQRCode(delegate: Delegate): Promise<string> {
     const data = {
@@ -117,7 +132,7 @@ async create(
     };
 
     const qr = await QRCode.toDataURL(JSON.stringify(data));
-    return qr; // base64 image string
+    return qr;
   }
 
   async getDelegatesByWorkshops(workshopIds: string[]): Promise<Delegate[]> {
@@ -156,32 +171,32 @@ async create(
 
   async findAll(): Promise<Delegate[]> {
     return await this.delegateRepository.find({
-      relations: ['workshops'], // include if needed
+      relations: ['workshops'],
     });
   }
 
   async findOne(id: string) {
-    const delegate = await this.delegateRepository.findOne({ where: { id }, relations: ['workshops'] });
+    const delegate = await this.delegateRepository.findOne({
+      where: { id },
+      relations: ['workshops'],
+    });
     if (!delegate) {
       throw new NotFoundException('Delegate not found');
     }
     return delegate;
   }
+
   async remove(id: string): Promise<any> {
     const delegate = await this.delegateRepository.findOne({
-      where: { id }
+      where: { id },
     });
-  
+
     if (!delegate) {
       throw new NotFoundException('Delegate not found');
     }
-  
+
     await this.delegateRepository.remove(delegate);
-  
-    return {'message': 'Delegate deleted successfully!'};
+
+    return { message: 'Delegate deleted successfully!' };
   }
-  
-  
-
-
 }
