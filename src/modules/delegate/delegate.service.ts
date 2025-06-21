@@ -171,14 +171,14 @@ export class DelegateService {
 
   async findAll(): Promise<Delegate[]> {
     return await this.delegateRepository.find({
-      relations: ['workshops'],
+      relations: ['workshop'],
     });
   }
 
   async findOne(id: string) {
     const delegate = await this.delegateRepository.findOne({
       where: { id },
-      relations: ['workshops'],
+      relations: ['workshop'],
     });
     if (!delegate) {
       throw new NotFoundException('Delegate not found');
