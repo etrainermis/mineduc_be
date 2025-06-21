@@ -47,9 +47,9 @@ import { WorkshopModule } from './modules/workshops/workshops.module';
           Speaker,
           Workshop,
         ],
-        // ssl: {
-        //   rejectUnauthorized: true,
-        // },
+        ssl: {
+          rejectUnauthorized: true,
+        },
         synchronize: true,
       }),
       inject: [ConfigService],
