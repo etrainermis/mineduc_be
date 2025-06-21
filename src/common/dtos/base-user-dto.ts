@@ -40,7 +40,6 @@ export class BaseUserDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty({required:false})
-    @IsPhoneNumber()
     phonenumber: string;
 
  
