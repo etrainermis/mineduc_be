@@ -28,7 +28,7 @@ export class Delegate extends User {
   country: string;
 
   @Column()
-  partener_state: string;
+  partner_state: string;
 
   @Column()
   organization: string;
