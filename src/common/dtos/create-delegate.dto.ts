@@ -58,7 +58,7 @@ export class CreateDelegateDto extends BaseUserDto {
 
   @IsOptional()
   @ApiProperty()
-  accomomdation_details: string;
+  accommodation_details: string;
 
   @IsOptional()
   @Type(() => Date)

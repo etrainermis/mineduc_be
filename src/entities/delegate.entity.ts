@@ -57,7 +57,7 @@ export class Delegate extends User {
   accommodation_status: string;
 
   @Column({ nullable: true })
-  accomomdation_details: string;
+  accommodation_details: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registration_date: Date;
