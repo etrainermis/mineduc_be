@@ -15,7 +15,6 @@ async function bootstrap() {
   app.useGlobalFilters(new AppExceptionFilter());
   app.useStaticAssets(join(__dirname, '..', 'public'));
 
-  // Enable console logging for development
   if (process.env.NODE_ENV !== 'production') {
     app.useLogger(console);
   }
@@ -26,7 +25,6 @@ async function bootstrap() {
     }),
   );
 
-  // ✅ Serve static files from "uploads" folder
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/profile-pictures',
   });
@@ -58,12 +56,17 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT, '0.0.0.0').then(() => {
-    console.log(` Server listening at: http://localhost:${process.env.PORT}`);
-    console.log(`Swagger API: http://localhost:${process.env.PORT}/api`);
-    console.log(`Uploaded files served at: http://localhost:${process.env.PORT}/uploads`);
-  });
+  const port = Number(process.env.PORT) || 3270;
 
-  // insert the roles in the database at the application starting
+  try {
+    await app.listen(port, '0.0.0.0');
+    console.log(`Server listening at: http://localhost:${port}`);
+    console.log(`Swagger API: http://localhost:${port}/api`);
+    console.log(`Uploaded files served at: http://localhost:${port}/uploads`);
+  } catch (error) {
+    console.error('Error starting server:', error);
+    process.exit(1);
+  }
 }
+
 bootstrap();
