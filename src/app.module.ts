@@ -26,7 +26,7 @@ import { SpeakerModule } from './modules/speakers/speaker.module';
 import { EventModule } from './modules/events/event.module';
 import { WorkshopModule } from './modules/workshops/workshops.module';
 
-(global as any).crypto = crypto;
+// (global as any).crypto = crypto;
 
 @Module({
   imports: [
@@ -48,7 +48,7 @@ import { WorkshopModule } from './modules/workshops/workshops.module';
           Workshop,
         ],
         ssl: {
-          rejectUnauthorized: true,
+          rejectUnauthorized: false,
         },
         synchronize: true,
       }),
