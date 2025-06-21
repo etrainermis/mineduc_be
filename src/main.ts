@@ -57,7 +57,7 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT).then(() => {
+  await app.listen(process.env.PORT, '0.0.0.0').then(() => {
     console.log(` Server listening at: http://localhost:${process.env.PORT}`);
     console.log(`Swagger API: http://localhost:${process.env.PORT}/api`);
     console.log(`Uploaded files served at: http://localhost:${process.env.PORT}/uploads`);

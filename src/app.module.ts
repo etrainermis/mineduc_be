@@ -1,3 +1,4 @@
+import * as crypto from 'crypto';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
 import { DelegateModule } from './modules/delegate/delegate.module';
