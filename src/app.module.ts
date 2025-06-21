@@ -26,6 +26,7 @@ import { SpeakerModule } from './modules/speakers/speaker.module';
 import { EventModule } from './modules/events/event.module';
 import { WorkshopModule } from './modules/workshops/workshops.module';
 
+(global as any).crypto = crypto;
 
 @Module({
   imports: [
@@ -78,11 +79,9 @@ import { WorkshopModule } from './modules/workshops/workshops.module';
   providers: [{ provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class AppModule implements OnModuleInit {
-  
   constructor(private readonly roleService: RoleService) {}
 
   async onModuleInit() {
-
     let roles = await this.roleService.getAllRoles();
     if (!roles || roles.length == 0) {
       this.roleService.createRoles();
