@@ -1,7 +1,6 @@
 import * as crypto from 'crypto';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
-import { DelegateModule } from './modules/delegate/delegate.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Role } from './entities/role.entity';
@@ -25,6 +24,7 @@ import { Event } from './entities/event.entity';
 import { SpeakerModule } from './modules/speakers/speaker.module';
 import { EventModule } from './modules/events/event.module';
 import { WorkshopModule } from './modules/workshops/workshops.module';
+import { DelegateModule } from './modules/delegate/delegate.module';
 
 // (global as any).crypto = crypto;
 

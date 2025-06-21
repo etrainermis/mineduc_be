@@ -4,4 +4,5 @@ export enum EDelegateType {
     DP = 'DP',
     ENT = 'ENT',
     EXP = 'EXP',
+    CSO = 'CSO'
   }
