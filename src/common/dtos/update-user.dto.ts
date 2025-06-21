@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsEnum,
   IsEmail,
-  IsPhoneNumber,
 } from 'class-validator';
 import { ERole } from '../enums/ERole.enum';
 import { EGender } from '../enums/EGender.enum';
@@ -41,6 +40,5 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   @ApiProperty()
-  @IsPhoneNumber()
   phonenumber: string;
 }

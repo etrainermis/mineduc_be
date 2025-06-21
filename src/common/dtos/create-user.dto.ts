@@ -4,8 +4,7 @@ import {
     IsNotEmpty,
     IsEnum,
     IsEmail,
-    IsStrongPassword,
-    IsPhoneNumber,
+    IsStrongPassword
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ERole } from '../enums/ERole.enum';
@@ -57,7 +56,6 @@ export class CreateUserByAdminDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  @IsPhoneNumber()
   phonenumber: string;
 
 
