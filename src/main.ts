@@ -18,14 +18,11 @@ async function bootstrap() {
     app.useLogger(console);
   }
 
-app.use(
-  cors({
-    origin: 'https://mineduc-form.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  }),
-);
+app.use(cors({
+  origin: 'https://mineduc-form.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
