@@ -18,12 +18,13 @@ async function bootstrap() {
     app.useLogger(console);
   }
 
-app.use(cors({
-  origin: 'https://mineduc-form.vercel.app',
+
+app.enableCors({
+  origin: ['https://mineduc-form.vercel.app', 'https://4theacworldkiswahili.mineduc.gov.rw'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-
+  credentials: true,
+});
 
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/profile-pictures',
