@@ -186,17 +186,25 @@ export class DelegateService {
     return delegate;
   }
 
-  async remove(id: string): Promise<any> {
-    const delegate = await this.delegateRepository.findOne({
-      where: { id },
-    });
+async remove(id: string): Promise<any> {
+  const delegate = await this.delegateRepository.findOne({
+    where: { id },
+    relations: ['workshop'],
+  });
 
-    if (!delegate) {
-      throw new NotFoundException('Delegate not found');
-    }
-
-    await this.delegateRepository.remove(delegate);
-
-    return { message: 'Delegate deleted successfully!' };
+  if (!delegate) {
+    throw new NotFoundException('Delegate not found');
   }
+
+  // Decrease registered count on the associated workshop
+  if (delegate.workshop && delegate.workshop.registered > 0) {
+    delegate.workshop.registered -= 1;
+    await this.workshopRepository.save(delegate.workshop);
+  }
+
+  await this.delegateRepository.remove(delegate);
+
+  return { message: 'Delegate deleted successfully!' };
+}
+
 }
