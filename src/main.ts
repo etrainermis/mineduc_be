@@ -20,8 +20,12 @@ async function bootstrap() {
 
 
 app.enableCors({
-  origin: ['https://mineduc-form.vercel.app', 'https://4theacworldkiswahili.mineduc.gov.rw'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: [
+    'https://mineduc-form.vercel.app',
+    'https://4theacworldkiswahili.mineduc.gov.rw',
+    'http://localhost:3000', // <--- Add this for local dev!
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 });
