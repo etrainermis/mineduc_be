@@ -18,11 +18,13 @@ async function bootstrap() {
     app.useLogger(console);
   }
 
-  app.use(
-    cors({
-      origin: '*',
-    }),
-  );
+app.use(
+  cors({
+    origin: ['https://mineduc-form.vercel.app'], // or multiple origins
+    credentials: true, // allow cookies or auth headers
+  }),
+);
+
 
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/profile-pictures',
