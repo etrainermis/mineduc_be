@@ -20,8 +20,10 @@ async function bootstrap() {
 
 app.use(
   cors({
-    origin: ['https://mineduc-form.vercel.app'], // or multiple origins
-    credentials: true, // allow cookies or auth headers
+    origin: 'https://mineduc-form.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   }),
 );
 
