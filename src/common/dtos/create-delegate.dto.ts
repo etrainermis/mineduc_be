@@ -61,20 +61,24 @@ export class CreateDelegateDto extends BaseUserDto {
   @ApiProperty()
   accommodation_details: string;
 
-  @IsOptional()
-  @Type(() => Date)
-  @ApiProperty({ type: String, format: 'date-time', required: false })
-  arrival_datetime?: Date;
+@Transform(({ value }) => (value === '' ? undefined : value))
+@IsOptional()
+@Type(() => Date)
+@ApiProperty({ type: String, format: 'date-time', required: false })
+arrival_datetime?: Date;
 
-  @IsOptional()
-  @Type(() => Date)
-  @ApiProperty({ type: String, format: 'date-time', required: false })
-  departure_datetime?: Date;
+@Transform(({ value }) => (value === '' ? undefined : value))
+@IsOptional()
+@Type(() => Date)
+@ApiProperty({ type: String, format: 'date-time', required: false })
+departure_datetime?: Date;
+
 
   @IsOptional()
   @ApiProperty({ required: false })
   airline?: string;
 
+  @Transform(({ value }) => (value === '' ? undefined : value))
   @IsOptional()
   @IsEnum(ETransportMode)
   @ApiProperty({ enum: ETransportMode, required: false })
@@ -84,24 +88,16 @@ export class CreateDelegateDto extends BaseUserDto {
   @ApiProperty({ required: false })
   boarder_name?: string;
 
+  @Transform(({ value }) => (value === '' ? undefined : value))
   @IsOptional()
   @Type(() => Date)
-  @ApiProperty({
-    type: String,
-    format: 'date',
-    required: false,
-    example: '2025-07-05',
-  })
+  @ApiProperty({ type: String, format: 'date-time', required: false })
   road_arrival_datetime?: Date;
 
+  @Transform(({ value }) => (value === '' ? undefined : value))
   @IsOptional()
   @Type(() => Date)
-  @ApiProperty({
-    type: String,
-    format: 'date',
-    required: false,
-    example: '2025-07-10',
-  })
+  @ApiProperty({ type: String, format: 'date-time', required: false })
   road_departure_datetime?: Date;
 
   @IsOptional()

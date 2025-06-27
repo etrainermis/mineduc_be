@@ -57,10 +57,10 @@ export class Delegate extends User {
   @Column({ nullable: true })
   boarder_name?: string;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   road_arrival_datetime?: Date;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   road_departure_datetime?: Date;
 
   @Column({ nullable: true })
