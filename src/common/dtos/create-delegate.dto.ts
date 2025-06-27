@@ -13,6 +13,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BaseUserDto } from './base-user-dto';
 import { EEventType } from '../enums/EEventType.enum';
 import { Transform, Type } from 'class-transformer';
+import { ETransportMode } from '../enums/ETransportmode.enum';
 
 export class CreateDelegateDto extends BaseUserDto {
   @IsEnum(EDelegateType)
@@ -73,6 +74,35 @@ export class CreateDelegateDto extends BaseUserDto {
   @IsOptional()
   @ApiProperty({ required: false })
   airline?: string;
+
+  @IsOptional()
+  @IsEnum(ETransportMode)
+  @ApiProperty({ enum: ETransportMode, required: false })
+  mode_of_transport?: ETransportMode;
+
+  @IsOptional()
+  @ApiProperty({ required: false })
+  boarder_name?: string;
+
+  @IsOptional()
+  @Type(() => Date)
+  @ApiProperty({
+    type: String,
+    format: 'date',
+    required: false,
+    example: '2025-07-05',
+  })
+  road_arrival_datetime?: Date;
+
+  @IsOptional()
+  @Type(() => Date)
+  @ApiProperty({
+    type: String,
+    format: 'date',
+    required: false,
+    example: '2025-07-10',
+  })
+  road_departure_datetime?: Date;
 
   @IsOptional()
   @IsEnum(EEventType)

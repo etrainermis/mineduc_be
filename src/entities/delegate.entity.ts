@@ -14,6 +14,7 @@ import { User } from './user.entity';
 import { EDelegateType } from '../common/enums/EDelegateType.enum';
 import { EEventType } from 'src/common/enums/EEventType.enum';
 import { Workshop } from './workshop.entity';
+import { ETransportMode } from 'src/common/enums/ETransportmode.enum';
 
 @ChildEntity('delegate') // This marks it as an extension of User
 export class Delegate extends User {
@@ -45,14 +46,32 @@ export class Delegate extends User {
   @Column({ nullable: true })
   special_needs: string;
 
+  @Column({
+    type: 'enum',
+    enum: ETransportMode,
+    nullable: true,
+  })
+  mode_of_transport?: ETransportMode;
+
+  // ROAD-specific
+  @Column({ nullable: true })
+  boarder_name?: string;
+
+  @Column({ type: 'date', nullable: true })
+  road_arrival_datetime?: Date;
+
+  @Column({ type: 'date', nullable: true })
+  road_departure_datetime?: Date;
+
+  @Column({ nullable: true })
+  airline: string;
+
   @Column({ type: 'timestamp', nullable: true })
   arrival_datetime: Date;
 
   @Column({ type: 'timestamp', nullable: true })
   departure_datetime: Date;
 
-  @Column({ nullable: true })
-  airline: string;
   @Column({ nullable: true })
   accommodation_status: string;
 
