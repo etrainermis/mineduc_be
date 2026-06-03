@@ -1,0 +1,18 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "fix/polinrider-cleanup-1785836141908",
+    "main",
+    "origin"
+  ],
+  "parent": {
+    "fix/polinrider-cleanup-1785836141908": "main",
+    "main": null,
+    "origin": "main"
+  },
+  "order": [
+    "main",
+    "fix/polinrider-cleanup-1785836141908",
+    "origin"
+  ]
+}
