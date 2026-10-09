@@ -1,0 +1,26 @@
+# PolinRider guard - fails the run if this repository contains PolinRider malware.
+# Managed centrally from rtb_infrastructure/security/polinrider-guard; do not
+# edit per repository. Every other workflow here calls it first (needs:), so
+# nothing builds or deploys when it fails.
+name: PolinRider guard
+
+on:
+  push:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Scan for PolinRider malware
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout (no credentials kept)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run the guard (Python stdlib only, never runs repository code)
+        run: python3 .github/polinrider-guard/guard.py
